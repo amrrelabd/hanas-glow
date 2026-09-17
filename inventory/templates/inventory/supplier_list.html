@@ -1,0 +1,29 @@
+{% extends "inventory/base.html" %}
+{% block title %}Suppliers - Hana's Glow{% endblock %}
+{% block page_title %}Suppliers{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'inventory:supplier_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New Supplier</a>
+</div>
+<div class="card stat-card p-3">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead><tr><th>Name</th><th>Phone</th><th></th></tr></thead>
+            <tbody>
+            {% for s in suppliers %}
+                <tr>
+                    <td>{{ s.name }}</td>
+                    <td>{{ s.phone }}</td>
+                    <td class="text-end">
+                        <a href="{% url 'inventory:supplier_edit' s.pk %}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+                        <a href="{% url 'inventory:supplier_delete' s.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="3" class="text-center text-muted py-4">No suppliers yet.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

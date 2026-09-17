@@ -1,0 +1,44 @@
+{% extends "inventory/base.html" %}
+{% block title %}Balance Sheet - Hana's Glow{% endblock %}
+{% block page_title %}Balance Sheet{% endblock %}
+{% block content %}
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card stat-card p-3">
+            <h6 class="mb-3">Assets</h6>
+            <table class="table mb-0">
+                {% for row in asset_rows %}
+                    <tr><td>{{ row.account.name }}</td><td class="text-end">{{ row.amount|floatformat:2 }}</td></tr>
+                {% endfor %}
+                <tr class="fw-bold border-top"><td>Total Assets</td><td class="text-end">{{ total_assets|floatformat:2 }}</td></tr>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card stat-card p-3 mb-3">
+            <h6 class="mb-3">Liabilities</h6>
+            <table class="table mb-0">
+                {% for row in liability_rows %}
+                    <tr><td>{{ row.account.name }}</td><td class="text-end">{{ row.amount|floatformat:2 }}</td></tr>
+                {% endfor %}
+                <tr class="fw-bold border-top"><td>Total Liabilities</td><td class="text-end">{{ total_liabilities|floatformat:2 }}</td></tr>
+            </table>
+        </div>
+        <div class="card stat-card p-3">
+            <h6 class="mb-3">Equity</h6>
+            <table class="table mb-0">
+                {% for row in equity_rows %}
+                    <tr><td>{{ row.account.name }}</td><td class="text-end">{{ row.amount|floatformat:2 }}</td></tr>
+                {% endfor %}
+                <tr><td>Retained Earnings (Income - Expenses)</td><td class="text-end">{{ retained_earnings|floatformat:2 }}</td></tr>
+                <tr class="fw-bold border-top"><td>Total Equity</td><td class="text-end">{{ total_equity|floatformat:2 }}</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+{% if not balanced %}
+    <div class="alert alert-danger mt-3">Warning: Assets do not equal Liabilities + Equity.</div>
+{% else %}
+    <div class="alert alert-success mt-3">Balanced: Assets = Liabilities + Equity ✓</div>
+{% endif %}
+{% endblock %}

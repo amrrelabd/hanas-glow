@@ -1,0 +1,57 @@
+{% extends "inventory/base.html" %}
+{% block title %}Dashboard - Hana's Glow{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+<div class="row g-3 mb-2">
+    <div class="col-md-3 col-6">
+        <div class="card stat-card p-3">
+            <div class="text-muted small">Revenue this month</div>
+            <div class="value">{{ revenue_this_month|floatformat:0 }} EGP</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card stat-card p-3">
+            <div class="text-muted small">Expenses this month</div>
+            <div class="value">{{ expenses_this_month|floatformat:0 }} EGP</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card stat-card p-3">
+            <div class="text-muted small">Pending Orders</div>
+            <div class="value">{{ pending_orders }}</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card stat-card p-3">
+            <div class="text-muted small">Low Stock Products</div>
+            <div class="value text-danger">{{ low_stock_count }}</div>
+        </div>
+    </div>
+</div>
+<div class="row g-3">
+    <div class="col-md-3 col-6">
+        <div class="card stat-card p-3">
+            <div class="text-muted small">Products</div>
+            <div class="value">{{ product_count }}</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card stat-card p-3">
+            <div class="text-muted small">Customers</div>
+            <div class="value">{{ customer_count }}</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card stat-card p-3">
+            <div class="text-muted small">Suppliers</div>
+            <div class="value">{{ supplier_count }}</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card stat-card p-3">
+            <div class="text-muted small">Open Special Orders</div>
+            <div class="value">{{ special_orders_open }}</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

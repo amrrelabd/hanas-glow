@@ -1,0 +1,66 @@
+{% extends "inventory/base.html" %}
+{% block title %}{{ title }} - Hana's Glow{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="card stat-card p-4 fade-in mb-3">
+    <form method="post" id="order-form">
+        {% csrf_token %}
+        <div class="row g-3">
+            {% for field in form %}
+                <div class="col-md-6">
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% for error in field.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <hr class="my-4">
+        <h6 class="mb-3">Order Items</h6>
+        {{ formset.management_form }}
+        <div id="formset-rows">
+            {% for item_form in formset %}
+                <div class="row g-2 align-items-center mb-2 formset-row">
+                    {% for hidden in item_form.hidden_fields %}{{ hidden }}{% endfor %}
+                    <div class="col-md-4">{{ item_form.product }}</div>
+                    <div class="col-md-2">{{ item_form.quantity }}</div>
+                    <div class="col-md-3">{{ item_form.unit_price }}</div>
+                    <div class="col-md-2">
+                        {% if item_form.DELETE %}
+                            <div class="form-check">
+                                {{ item_form.DELETE }}
+                                <label class="form-check-label small">Remove</label>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" id="add-line" class="btn btn-sm btn-outline-primary mt-2">
+            <i class="bi bi-plus-lg"></i> Add line
+        </button>
+
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">Save Order</button>
+            <a href="{% url 'inventory:order_list' %}" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.getElementById('add-line').addEventListener('click', function () {
+    const totalForms = document.getElementById('id_items-TOTAL_FORMS');
+    const rows = document.getElementById('formset-rows');
+    const idx = parseInt(totalForms.value, 10);
+    const template = rows.querySelector('.formset-row').cloneNode(true);
+    template.querySelectorAll('input, select').forEach(function (el) {
+        el.name = el.name.replace(/items-\d+-/, 'items-' + idx + '-');
+        el.id = el.id.replace(/items-\d+-/, 'items-' + idx + '-');
+        if (el.type === 'checkbox') { el.checked = false; } else { el.value = ''; }
+    });
+    rows.appendChild(template);
+    totalForms.value = idx + 1;
+});
+</script>
+{% endblock %}

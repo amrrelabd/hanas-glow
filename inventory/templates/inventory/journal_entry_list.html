@@ -1,0 +1,35 @@
+{% extends "inventory/base.html" %}
+{% block title %}Journal Entries - Hana's Glow{% endblock %}
+{% block page_title %}Journal Entries{% endblock %}
+{% block content %}
+<div class="card stat-card p-3">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead><tr><th>Date</th><th>Description</th><th>Source</th><th>Reference</th><th>Lines</th></tr></thead>
+            <tbody>
+            {% for e in entries %}
+                <tr>
+                    <td>{{ e.date }}</td>
+                    <td>{{ e.description }}</td>
+                    <td><span class="badge text-bg-light border">{{ e.get_source_type_display }}</span></td>
+                    <td>{{ e.reference }}</td>
+                    <td>
+                        <table class="table table-sm mb-0">
+                            {% for line in e.lines.all %}
+                                <tr>
+                                    <td class="border-0 py-0">{{ line.account.code }} {{ line.account.name }}</td>
+                                    <td class="border-0 py-0 text-end">{% if line.debit %}Dr {{ line.debit|floatformat:2 }}{% endif %}</td>
+                                    <td class="border-0 py-0 text-end">{% if line.credit %}Cr {{ line.credit|floatformat:2 }}{% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5" class="text-center text-muted py-4">No journal entries yet.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

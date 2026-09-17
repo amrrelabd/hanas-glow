@@ -1,0 +1,36 @@
+{% extends "inventory/base.html" %}
+{% block title %}Orders - Hana's Glow{% endblock %}
+{% block page_title %}Sales / Orders{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'inventory:order_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New Order</a>
+</div>
+<div class="card stat-card p-3">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead><tr>
+                <th>Order #</th><th>Date</th><th>Customer</th><th>Channel</th>
+                <th>Payment</th><th>Delivery</th><th></th>
+            </tr></thead>
+            <tbody>
+            {% for o in orders %}
+                <tr>
+                    <td>{{ o.order_number }}</td>
+                    <td>{{ o.order_date }}</td>
+                    <td>{{ o.customer|default:"—" }}</td>
+                    <td>{{ o.get_channel_display }}</td>
+                    <td><span class="badge text-bg-{% if o.payment_status == 'paid' %}success{% elif o.payment_status == 'partial' %}warning{% else %}secondary{% endif %}">{{ o.get_payment_status_display }}</span></td>
+                    <td><span class="badge text-bg-{% if o.delivery_status == 'delivered' %}success{% elif o.delivery_status == 'cancelled' %}danger{% else %}info{% endif %}">{{ o.get_delivery_status_display }}</span></td>
+                    <td class="text-end">
+                        <a href="{% url 'inventory:order_edit' o.pk %}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+                        <a href="{% url 'inventory:order_delete' o.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="7" class="text-center text-muted py-4">No orders yet.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

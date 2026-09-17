@@ -1,0 +1,33 @@
+{% extends "inventory/base.html" %}
+{% block title %}Profit & Loss - Hana's Glow{% endblock %}
+{% block page_title %}Profit &amp; Loss{% endblock %}
+{% block content %}
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card stat-card p-3">
+            <h6 class="mb-3">Income</h6>
+            <table class="table mb-0">
+                {% for row in income_rows %}
+                    <tr><td>{{ row.account.name }}</td><td class="text-end">{{ row.amount|floatformat:2 }}</td></tr>
+                {% endfor %}
+                <tr class="fw-bold border-top"><td>Total Income</td><td class="text-end">{{ total_income|floatformat:2 }}</td></tr>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card stat-card p-3">
+            <h6 class="mb-3">Expenses (incl. COGS)</h6>
+            <table class="table mb-0">
+                {% for row in expense_rows %}
+                    <tr><td>{{ row.account.name }}</td><td class="text-end">{{ row.amount|floatformat:2 }}</td></tr>
+                {% endfor %}
+                <tr class="fw-bold border-top"><td>Total Expenses</td><td class="text-end">{{ total_expense|floatformat:2 }}</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="card stat-card p-3 mt-3">
+    <div class="text-muted small">Net Profit</div>
+    <div class="value {% if net_profit < 0 %}text-danger{% else %}text-success{% endif %}">{{ net_profit|floatformat:2 }} EGP</div>
+</div>
+{% endblock %}

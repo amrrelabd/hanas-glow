@@ -1,0 +1,28 @@
+{% extends "inventory/base.html" %}
+{% block title %}Stock Movements - Hana's Glow{% endblock %}
+{% block page_title %}Stock Movements{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'inventory:stock_movement_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New Adjustment</a>
+</div>
+<div class="card stat-card p-3">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead><tr><th>Date</th><th>Product</th><th>Reason</th><th class="text-end">Qty</th><th>Reference</th></tr></thead>
+            <tbody>
+            {% for m in movements %}
+                <tr>
+                    <td>{{ m.created_at|date:"Y-m-d H:i" }}</td>
+                    <td>{{ m.product.name }}</td>
+                    <td>{{ m.get_reason_display }}</td>
+                    <td class="text-end {% if m.quantity_delta < 0 %}text-danger{% else %}text-success{% endif %}">{{ m.quantity_delta }}</td>
+                    <td>{{ m.reference_id }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5" class="text-center text-muted py-4">No stock movements yet.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

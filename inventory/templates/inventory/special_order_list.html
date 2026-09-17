@@ -1,0 +1,36 @@
+{% extends "inventory/base.html" %}
+{% block title %}Special Orders - Hana's Glow{% endblock %}
+{% block page_title %}Special Orders{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'inventory:special_order_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New Special Order</a>
+</div>
+<div class="card stat-card p-3">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead><tr>
+                <th>Customer</th><th>Item</th><th class="text-end">Qty</th>
+                <th class="text-end">Agreed Price</th><th class="text-end">Balance</th><th>Status</th><th></th>
+            </tr></thead>
+            <tbody>
+            {% for so in special_orders %}
+                <tr>
+                    <td>{{ so.customer_name }}</td>
+                    <td>{{ so.item_requested }}</td>
+                    <td class="text-end">{{ so.quantity }}</td>
+                    <td class="text-end">{{ so.agreed_price }}</td>
+                    <td class="text-end">{{ so.balance_remaining }}</td>
+                    <td><span class="badge text-bg-info">{{ so.get_status_display }}</span></td>
+                    <td class="text-end">
+                        <a href="{% url 'inventory:special_order_edit' so.pk %}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+                        <a href="{% url 'inventory:special_order_delete' so.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="7" class="text-center text-muted py-4">No special orders yet.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
